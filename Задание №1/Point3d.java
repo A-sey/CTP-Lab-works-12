@@ -1,20 +1,20 @@
-// Класс точки в трёхмерном пространстве
+// РљР»Р°СЃСЃ С‚РѕС‡РєРё РІ С‚СЂС‘С…РјРµСЂРЅРѕРј РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРµ
 public class Point3d {
-	// Перемненные координат точки
+	// РџРµСЂРµРјРµРЅРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚ С‚РѕС‡РєРё
 	private double xCoord;
 	private double yCoord;
 	private double zCoord;
-	// Конструктор, чтобы инициализировать точку (x,y,z)
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, С‡С‚РѕР±С‹ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ С‚РѕС‡РєСѓ (x,y,z)
 	public Point3d (double x, double y, double z){
 		xCoord=x;
 		yCoord=y;
 		zCoord=z;
 	}
-	// Конструктор по-умолчанию
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	public Point3d (){
 		this (0,0,0);
 	}
-	// Методы, возвращающие координаты:
+	// РњРµС‚РѕРґС‹, РІРѕР·РІСЂР°С‰Р°СЋС‰РёРµ РєРѕРѕСЂРґРёРЅР°С‚С‹:
 	public double getX(){
 		return xCoord;
 	}
@@ -24,7 +24,7 @@ public class Point3d {
 	public double getZ(){
 		return zCoord;
 	}
-	// Методы, позволяющие ввести координаты:
+	// РњРµС‚РѕРґС‹, РїРѕР·РІРѕР»СЏСЋС‰РёРµ РІРІРµСЃС‚Рё РєРѕРѕСЂРґРёРЅР°С‚С‹:
 	public void SetX(double val){
 		xCoord=val;
 	}
@@ -35,12 +35,12 @@ public class Point3d {
 		zCoord=val;
 	}
 	
-	// Метод, проверяющий равенство двух точек
+	// РњРµС‚РѕРґ, РїСЂРѕРІРµСЂСЏСЋС‰РёР№ СЂР°РІРµРЅСЃС‚РІРѕ РґРІСѓС… С‚РѕС‡РµРє
 	public boolean areEqual (Point3d point) {
 		if (xCoord==point.getX() && yCoord==point.getY() && zCoord==point.getZ()) return true;
 		return false;
 	}
-	// Метод, находящий расстояние между двумя точками
+	// РњРµС‚РѕРґ, РЅР°С…РѕРґСЏС‰РёР№ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РґРІСѓРјСЏ С‚РѕС‡РєР°РјРё
 	public double distanceTo(Point3d p){
 		return Math.sqrt(Math.pow(xCoord-p.getX(),2)+Math.pow(yCoord-p.getY(),2)+Math.pow(zCoord-p.getZ(),2));
 	}
