@@ -10,17 +10,6 @@ public class Location
     /** Y coordinate of this location. **/
     public int yCoord;
 
-    public boolean equals (Location p){
-        return (xCoord==p.xCoord && yCoord==p.yCoord);
-    }
-
-    public int hashcode(Location p){
-    final int Prime=31;
-    int result = 1;
-    result = result * Prime + xCoord;
-    result = result * Prime + yCoord;
-    return result;
-    }
 
     /** Creates a new location with the specified integer coordinates. **/
     public Location(int x, int y)
@@ -33,5 +22,19 @@ public class Location
     public Location()
     {
         this(0, 0);
+    }
+
+    public boolean equals(Object obj)
+    {
+        Location loc = (Location) obj;
+        return (xCoord == loc.xCoord && yCoord == loc.yCoord);
+    }
+
+    public int hashCode() 
+    {
+        int result = 0;
+        result = xCoord;
+        result = result*31+ yCoord;
+        return result;
     }
 }

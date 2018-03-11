@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.HashMap;
 /**
  * This class stores the basic state necessary for the A* algorithm to compute a
  * path across a map.  This state includes a collection of "open waypoints" and
@@ -12,8 +10,8 @@ public class AStarState
 {
     /** This is a reference to the map that the A* algorithm is navigating. **/
     private Map2D map;
-    private List<Waypoint> openPoints;
-    private List<Waypoint> closePoints;
+    private HashMap<Location, Waypoint> openPoints;
+    private HashMap<Location, Waypoint> closePoints;
 
     /**
      * Initialize a new state object for the A* pathfinding algorithm to use.
@@ -24,8 +22,8 @@ public class AStarState
             throw new NullPointerException("map cannot be null");
 
         this.map = map;
-        openPoints = new ArrayList<Waypoint>();
-        closePoints = new ArrayList<Waypoint>();
+        openPoints = new HashMap<Location, Waypoint>();
+        closePoints = new HashMap<Location, Waypoint>();
 
     }
 
@@ -42,12 +40,18 @@ public class AStarState
      **/
     public Waypoint getMinOpenWaypoint()
     {
-        if (numOpenWaypoints()==0) return null;
-        Waypoint minPoint = openPoints.get(0);
-        for (int i=1; i<numOpenWaypoints();i++){
-            Waypoint p = openPoints.get(i);
-            if (p.getTotalCost()<minPoint.getTotalCost()) minPoint=p;
+		Waypoint[] p=new Waypoint[]{};
+		p=openPoints.values().toArray(p);
+		Waypoint minPoint=p[0];
+		double min=minPoint.getTotalCost();
+        for(int i=1;i<p.length; i++){
+            double cost = p[i].getTotalCost();
+            if (cost<min) {
+                minPoint=p[i];
+                min=cost;
+            }
         }
+
         return minPoint;
     }
 
@@ -62,23 +66,16 @@ public class AStarState
      **/
     public boolean addOpenWaypoint(Waypoint newWP)
     {
-        //Check all open points
-        for (int i=0; i<numOpenWaypoints(); i++){
-            Waypoint oldWP = openPoints.get(i);
-            Location oldLC = oldWP.getLocation();
-            //Check the conditions for the replacement of the point
-            if (oldLC==newWP.getLocation())
-                    if (oldWP.getPreviousCost()<newWP.getPreviousCost()){
-                    // If conditions are met, replace the point
-                    openPoints.remove(oldWP);
-                    openPoints.add(newWP);
-                    return true;
-            }
-            // If the point does not meet the conditions, return false
-            else return false;
+        Waypoint p=openPoints.get(newWP.getLocation());
+        if (p==null){
+            openPoints.put(newWP.getLocation(),newWP);
+            return true;
         }
-        openPoints.add(newWP);
-        return true;
+        if(newWP.getPreviousCost()<p.getPreviousCost()){
+            openPoints.replace(newWP.getLocation(),newWP);
+            return true;
+        }
+        return false;
     }
 
 
@@ -93,15 +90,13 @@ public class AStarState
      * This method moves the waypoint at the specified location from the
      * open list to the closed list.
      **/
-    public void closeWaypoint(Location loc)
+	
+	public void closeWaypoint(Location loc)
     {
-        for (int i=0; i<numOpenWaypoints(); i++){
-            Waypoint p=openPoints.get(i);
-            if (loc.equals(p.getLocation())){
-                openPoints.remove(p);
-                closePoints.add(p);
-            }
-
+        Waypoint p = openPoints.remove(loc);        
+        if(p!=null)
+        {
+            closePoints.put(loc, p);
         }
     }
 
@@ -110,11 +105,7 @@ public class AStarState
      * for the specified location.
      **/
     public boolean isLocationClosed(Location loc)
-    { //Check all closed points
-        for (int i=0; i<closePoints.size();i++){
-            // Compare the location of the "loc" and ith closed point
-            if (loc.equals(closePoints.get(i).getLocation())) return true;
-        }
-        return false;
+    {
+        return closePoints.containsKey(loc);
     }
 }
